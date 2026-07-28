@@ -1,0 +1,230 @@
+<div class="tenant-page">
+
+  <app-navbar></app-navbar>
+
+  <main class="main-content">
+
+    <header class="page-header">
+
+      <div>
+        <p class="page-label">Tenant management</p>
+        <h1>Tenant List</h1>
+        <p class="page-description">
+          Search, filter and manage all registered tenants.
+        </p>
+      </div>
+
+    </header>
+
+    <section class="toolbar-card">
+
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+
+        <input
+          type="text"
+          placeholder="Search by name, phone, Aadhaar or flat"
+          [(ngModel)]="searchText"
+          (input)="searchTenant()">
+      </div>
+
+      <select
+        class="status-filter"
+        [(ngModel)]="status"
+        (change)="filterByStatus()">
+
+        <option value="">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+
+      </select>
+
+      <div class="tenant-count">
+        <span>Total tenants</span>
+        <strong>{{ totalElements }}</strong>
+      </div>
+
+    </section>
+
+    <section class="table-card">
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+          <tr>
+            <th>ID</th>
+
+            <th
+              class="sortable"
+              (click)="sort('tenantName')">
+              Name
+              <span *ngIf="sortBy === 'tenantName'">
+                {{ direction === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+
+            <th>Phone</th>
+            <th>Aadhaar</th>
+
+            <th
+              class="sortable"
+              (click)="sort('flatNumber')">
+              Flat
+              <span *ngIf="sortBy === 'flatNumber'">
+                {{ direction === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+
+            <th
+              class="sortable"
+              (click)="sort('joiningDate')">
+              Joining Date
+              <span *ngIf="sortBy === 'joiningDate'">
+                {{ direction === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+
+            <th>Marital Status</th>
+
+            <th
+              class="sortable"
+              (click)="sort('rentAmount')">
+              Rent
+              <span *ngIf="sortBy === 'rentAmount'">
+                {{ direction === 'asc' ? '↑' : '↓' }}
+              </span>
+            </th>
+
+            <th>Status</th>
+            <th>Address</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+          <tr *ngFor="let tenant of tenants">
+
+            <td>
+              <span class="id-badge">
+                #{{ tenant.id }}
+              </span>
+            </td>
+
+            <td>
+              <div class="tenant-name-cell">
+                <div class="tenant-avatar">
+                  {{ tenant.tenantName?.charAt(0)?.toUpperCase() }}
+                </div>
+
+                <strong>{{ tenant.tenantName }}</strong>
+              </div>
+            </td>
+
+            <td>{{ tenant.phoneNumber }}</td>
+
+            <td class="muted-cell">
+              {{ tenant.aadhaarNumber }}
+            </td>
+
+            <td>
+              <span class="flat-badge">
+                {{ tenant.flatNumber }}
+              </span>
+            </td>
+
+            <td>{{ tenant.joiningDate | date:'dd MMM yyyy' }}</td>
+
+            <td>{{ tenant.maritalStatus }}</td>
+
+            <td class="rent-cell">
+              ₹{{ tenant.rentAmount | number:'1.0-0' }}
+            </td>
+
+            <td>
+              <span
+                class="status-badge"
+                [class.active-status]="tenant.status?.toLowerCase() === 'active'"
+                [class.inactive-status]="tenant.status?.toLowerCase() === 'inactive'">
+
+                <span class="status-dot"></span>
+                {{ tenant.status }}
+
+              </span>
+            </td>
+
+            <td class="address-cell">
+              {{ tenant.address }}
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  class="edit-btn"
+                  [routerLink]="['/update-tenant', tenant.id]">
+                  Edit
+                </button>
+
+                <button
+                  class="delete-btn"
+                  (click)="deleteTenant(tenant.id)">
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+          <tr *ngIf="tenants.length === 0">
+            <td colspan="11">
+
+              <div class="empty-state">
+                <div class="empty-icon">⌕</div>
+                <h3>No tenants found</h3>
+                <p>Try changing the search keyword or status filter.</p>
+              </div>
+
+            </td>
+          </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+      <div class="pagination">
+
+        <button
+          class="pagination-btn"
+          (click)="previousPage()"
+          [disabled]="currentPage === 0">
+          ← Previous
+        </button>
+
+        <div class="page-info">
+          <span>Page</span>
+          <strong>{{ currentPage + 1 }}</strong>
+          <span>of {{ totalPages || 1 }}</span>
+        </div>
+
+        <button
+          class="pagination-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage >= totalPages - 1">
+          Next →
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>

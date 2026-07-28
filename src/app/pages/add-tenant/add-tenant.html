@@ -1,0 +1,327 @@
+<div class="tenant-form-page">
+
+  <app-navbar></app-navbar>
+
+  <main class="main-content">
+
+    <header class="page-header">
+
+      <div>
+        <p class="page-label">
+          {{ isEditMode ? 'Tenant management' : 'New tenant' }}
+        </p>
+
+        <h1>
+          {{ isEditMode ? 'Update Tenant' : 'Add Tenant' }}
+        </h1>
+
+        <p class="page-description">
+          {{
+            isEditMode
+              ? 'Update the tenant information and save the changes.'
+              : 'Enter the details below to create a new tenant record.'
+          }}
+        </p>
+      </div>
+
+    </header>
+
+    <section class="form-card">
+
+      <div class="form-card-header">
+
+        <div class="form-icon">
+          {{ isEditMode ? '✎' : '+' }}
+        </div>
+
+        <div>
+          <h2>
+            {{ isEditMode ? 'Edit tenant details' : 'Tenant information' }}
+          </h2>
+
+          <p>
+            Fields marked with <span>*</span> are required.
+          </p>
+        </div>
+
+      </div>
+
+      <form
+        #tenantForm="ngForm"
+        (ngSubmit)="saveTenant()">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="tenantName">
+              Tenant Name <span>*</span>
+            </label>
+
+            <input
+              id="tenantName"
+              type="text"
+              placeholder="Enter tenant name"
+              [(ngModel)]="tenant.tenantName"
+              name="tenantName"
+              required
+              #tenantName="ngModel">
+
+            <small
+              class="error-text"
+              *ngIf="tenantName.invalid && tenantName.touched">
+              Tenant name is required.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="phoneNumber">
+              Phone Number <span>*</span>
+            </label>
+
+            <input
+              id="phoneNumber"
+              type="text"
+              inputmode="numeric"
+              placeholder="Enter 10-digit phone number"
+              [(ngModel)]="tenant.phoneNumber"
+              name="phoneNumber"
+              required
+              pattern="[0-9]{10}"
+              maxlength="10"
+              #phoneNumber="ngModel">
+
+            <small
+              class="error-text"
+              *ngIf="phoneNumber.invalid && phoneNumber.touched">
+
+              <span *ngIf="phoneNumber.errors?.['required']">
+                Phone number is required.
+              </span>
+
+              <span *ngIf="phoneNumber.errors?.['pattern']">
+                Enter a valid 10-digit phone number.
+              </span>
+
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="aadhaarNumber">
+              Aadhaar Number <span>*</span>
+            </label>
+
+            <input
+              id="aadhaarNumber"
+              type="text"
+              inputmode="numeric"
+              placeholder="Enter 12-digit Aadhaar number"
+              [(ngModel)]="tenant.aadhaarNumber"
+              name="aadhaarNumber"
+              required
+              pattern="[0-9]{12}"
+              maxlength="12"
+              #aadhaarNumber="ngModel">
+
+            <small
+              class="error-text"
+              *ngIf="aadhaarNumber.invalid && aadhaarNumber.touched">
+
+              <span *ngIf="aadhaarNumber.errors?.['required']">
+                Aadhaar number is required.
+              </span>
+
+              <span *ngIf="aadhaarNumber.errors?.['pattern']">
+                Enter a valid 12-digit Aadhaar number.
+              </span>
+
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="flatNumber">
+              Flat Number <span>*</span>
+            </label>
+
+            <input
+              id="flatNumber"
+              type="text"
+              placeholder="Example: A-101"
+              [(ngModel)]="tenant.flatNumber"
+              name="flatNumber"
+              required
+              #flatNumber="ngModel">
+
+            <small
+              class="error-text"
+              *ngIf="flatNumber.invalid && flatNumber.touched">
+              Flat number is required.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="joiningDate">
+              Joining Date <span>*</span>
+            </label>
+
+            <input
+              id="joiningDate"
+              type="date"
+              [(ngModel)]="tenant.joiningDate"
+              name="joiningDate"
+              required
+              #joiningDate="ngModel">
+
+            <small
+              class="error-text"
+              *ngIf="joiningDate.invalid && joiningDate.touched">
+              Joining date is required.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="maritalStatus">
+              Marital Status <span>*</span>
+            </label>
+
+            <select
+              id="maritalStatus"
+              [(ngModel)]="tenant.maritalStatus"
+              name="maritalStatus"
+              required
+              #maritalStatus="ngModel">
+
+              <option value="" disabled>
+                Select marital status
+              </option>
+
+              <option value="Single">Single</option>
+              <option value="Married">Married</option>
+              <option value="Unmarried">Unmarried</option>
+              <option value="Engaged">Engaged</option>
+
+            </select>
+
+            <small
+              class="error-text"
+              *ngIf="maritalStatus.invalid && maritalStatus.touched">
+              Marital status is required.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="rentAmount">
+              Monthly Rent <span>*</span>
+            </label>
+
+            <div class="currency-input">
+              <span>₹</span>
+
+              <input
+                id="rentAmount"
+                type="number"
+                min="1"
+                placeholder="Enter rent amount"
+                [(ngModel)]="tenant.rentAmount"
+                name="rentAmount"
+                required
+                #rentAmount="ngModel">
+            </div>
+
+            <small
+              class="error-text"
+              *ngIf="rentAmount.invalid && rentAmount.touched">
+              Valid rent amount is required.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="status">
+              Status <span>*</span>
+            </label>
+
+            <select
+              id="status"
+              [(ngModel)]="tenant.status"
+              name="status"
+              required
+              #status="ngModel">
+
+              <option value="" disabled>
+                Select tenant status
+              </option>
+
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+
+            </select>
+
+            <small
+              class="error-text"
+              *ngIf="status.invalid && status.touched">
+              Status is required.
+            </small>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="address">
+              Address <span>*</span>
+            </label>
+
+            <textarea
+              id="address"
+              rows="4"
+              placeholder="Enter complete address"
+              [(ngModel)]="tenant.address"
+              name="address"
+              required
+              #address="ngModel">
+            </textarea>
+
+            <small
+              class="error-text"
+              *ngIf="address.invalid && address.touched">
+              Address is required.
+            </small>
+          </div>
+
+        </div>
+
+        <div
+          class="api-error"
+          *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="cancel()">
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="tenantForm.invalid || isSubmitting">
+
+            {{
+              isSubmitting
+                ? 'Saving...'
+                : isEditMode
+                  ? 'Update Tenant'
+                  : 'Add Tenant'
+            }}
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+</div>

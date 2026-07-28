@@ -1,0 +1,124 @@
+<div class="dashboard-layout">
+
+  <app-navbar></app-navbar>
+
+  <main class="main-content">
+
+    <header class="dashboard-header">
+      <div>
+        <p class="welcome-text">Welcome back</p>
+        <h1>Dashboard Overview</h1>
+        <p class="subtitle">
+          Monitor your tenants, occupancy and monthly revenue.
+        </p>
+      </div>
+
+      <a routerLink="/add-tenant" class="add-button">
+        + Add Tenant
+      </a>
+    </header>
+
+    <section class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+
+        <div class="stat-details">
+          <p>Total Tenants</p>
+          <h2>{{ dashboardData.totalTenants || 0 }}</h2>
+          <span>Registered tenants</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🏠</div>
+
+        <div class="stat-details">
+          <p>Occupied Flats</p>
+          <h2>{{ dashboardData.occupiedFlats || 0 }}</h2>
+          <span>Currently active</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🔑</div>
+
+        <div class="stat-details">
+          <p>Vacant Flats</p>
+          <h2>{{ dashboardData.vacantFlats || 0 }}</h2>
+          <span>Available units</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">₹</div>
+
+        <div class="stat-details">
+          <p>Total Revenue</p>
+          <h2>
+            ₹{{ (dashboardData.totalRevenue || 0) | number:'1.0-0' }}
+          </h2>
+          <span>Monthly rent value</span>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="summary-section">
+
+      <div class="summary-card">
+        <div>
+          <p class="summary-label">Occupancy Overview</p>
+          <h3>Property performance</h3>
+        </div>
+
+        <div class="occupancy-row">
+          <span>Occupied</span>
+          <strong>{{ dashboardData.occupiedFlats || 0 }}</strong>
+        </div>
+
+        <div class="progress-track">
+          <div
+            class="progress-value"
+            [style.width.%]="
+              dashboardData.totalTenants
+                ? (dashboardData.occupiedFlats /
+                   dashboardData.totalTenants) * 100
+                : 0
+            ">
+          </div>
+        </div>
+
+        <div class="occupancy-footer">
+          <span>
+            {{ dashboardData.vacantFlats || 0 }} flats currently available
+          </span>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <p class="summary-label">Quick Actions</p>
+        <h3>Manage tenants</h3>
+
+        <a routerLink="/add-tenant" class="action-item">
+          <span>＋</span>
+          <div>
+            <strong>Add new tenant</strong>
+            <p>Create a tenant record</p>
+          </div>
+        </a>
+
+        <a routerLink="/tenants" class="action-item">
+          <span>☷</span>
+          <div>
+            <strong>View tenant list</strong>
+            <p>Search, edit and manage tenants</p>
+          </div>
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
